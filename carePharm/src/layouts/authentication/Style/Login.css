@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    
+}
+body {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    font-family: 'Roboto Slab', serif;
+
+}
+.background{
+    background-image: url('../../../assets/images/general_img/bg-Login.jpg');
+    width: 100%;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    z-index: 1;
+    display: flex;
+}
+.background::before{
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(255,255,255,0.9);
+}
+.box_login{
+    width: 500px;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 55px 55px 37px 55px;
+    background: -webkit-linear-gradient(top, #6082AB, #17a2b8);
+    height:auto;
+  
+}
+.form {
+    width: 100%;
+    display: block;
+}
+.logo{
+    color: #333333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background:  #67a1c6;
+    margin: 0 auto;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.logo_img{
+    height:60%;
+    width: 60%;
+}
+.signUp{
+    color: white;
+    text-align: center;
+     margin-top: 2%;
+
+}
+.btn_signup {
+    background-color: #ffffff;
+    color: #798182;
+    border-radius: 45px;
+    display: grid;
+    border: none;
+    margin: 0 auto;
+  }
+  
+.have_acc{
+    color: #fff;
+    text-align: center;
+    font-size: small;
+}
+.label_form{
+    color: #ffffff;
+}
+
+.input_field{
+    outline: none;
+    background: transparent;
+    padding: 0 5px 0 38px;
+    border-top:none;
+    border-right:none;
+    border-left:none;
+    line-height:2.0;
+    width: 100%;
+    border-bottom: 2px solid #67a1c6;
+    font-size: 15px;
+}
+input::placeholder{
+    color: #ffffff;
+}
+.col_input{
+    margin: 20px 0px 20px 0px;
+}
