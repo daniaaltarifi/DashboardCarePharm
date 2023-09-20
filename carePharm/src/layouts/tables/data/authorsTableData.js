@@ -30,7 +30,9 @@ function Author({ image, name, email }) {
     // Use an async function inside useEffect to fetch the data
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/users');
+        const response = await axios.get('http://localhost:5000/users',null,{headers:{
+          Authorization:`Bearer ${localStorage.getItem('authToken')}`,
+        }});
         setData(response.data);
         console.log(response.data)
         console.log(data)

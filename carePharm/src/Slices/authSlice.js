@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
 
 const initialState = {
   userInfo: localStorage.getItem('userInfo')
@@ -13,6 +14,10 @@ const authSlice = createSlice({
     setCredentials: (state, action) => {
       state.userInfo = action.payload;
       localStorage.setItem('userInfo', JSON.stringify(action.payload));
+      //get Token from cookies you have to install Cookies library to make react app read cookies properly
+      authToken = Cookies.get("jwt");
+      //then store it in localStorage
+      localStorage.setItem("authToken", authToken);
       const expirationTime = new Date().getTime() + 30 * 24 * 60 * 60 * 1000; // 30 days
       localStorage.setItem('expirationTime', expirationTime);
     },

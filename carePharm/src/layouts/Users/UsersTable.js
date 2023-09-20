@@ -18,7 +18,7 @@ function UsersTable() {
   return (
     <div>
       <Tables tabletitle="Users Table" addPost="add user" >
-<DataTable customTableHead={customTableHead}/>
+{/* <DataTable customTableHead={customTableHead}/> */}
 <Author/>
       </Tables>
     </div>
