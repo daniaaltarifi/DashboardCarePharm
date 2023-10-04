@@ -61,8 +61,8 @@ import News from "layouts/News/News.js";
 import Pharmacy from "layouts/Pharmacy/Pharmacy.js";
 import AdminRoute from "AdminRoute.js";
 import { Route } from "react-router-dom";
-
 const routes = [
+ 
   {
     type: "collapse",
     name: "Dashboard",
@@ -70,17 +70,19 @@ const routes = [
     route: "/dashboard",
     icon: <Shop size="12px" />,
     component: <Dashboard />,
+layout:"dashboard",
     noCollapse: true,
   },
-  {
-    type: "collapse",
-    name: "Users",
-    key: "tables",
-    route: "/tables",
-    icon: <Office size="12px" />,
-    component: <UsersTable />,
-    noCollapse: true,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Users",
+  //   key: "tables",
+  //   route: "/tables",
+  //   icon: <Office size="12px" />,
+  //   component: <UsersTable />,
+
+  //   noCollapse: true,
+  // },
   // {
   //   type: "collapse",
   //   name: "Billing",
@@ -97,17 +99,10 @@ const routes = [
     route: "/general-information",
     icon: <Cube size="12px" />,
     component: <VirtualReality />,
+
     noCollapse: true,
   },
-  {
-    type: "collapse",
-    name: "Advanced Information",
-    key: "advanced-information",
-    route: "/advanced-information",
-    icon: <Cube size="12px" />,
-    component: <AdvancedInfo />,
-    noCollapse: true,
-  },
+ 
   {
     type: "collapse",
     name: "News",
@@ -115,6 +110,7 @@ const routes = [
     route: "/news",
     icon: <Cube size="12px" />,
     component: <News />,
+
     noCollapse: true,
   },
   
@@ -125,17 +121,20 @@ const routes = [
     route: "/pharmacy",
     icon: <Cube size="12px" />,
     component: <Pharmacy/>,
+
     noCollapse: true,
   },
-  // {
-  //   type: "collapse",
-  //   name: "RTL",
-  //   key: "rtl",
-  //   route: "/rtl",
-  //   icon: <Settings size="12px" />,
-  //   component: <RTL />,
-  //   noCollapse: true,
-  // },
+  {
+    type: "collapse",
+    name: "Advanced Information",
+    key: "advanced-information",
+    route: "/advanced-information",
+    icon: <Cube size="12px" />,
+    component: <AdvancedInfo />,
+
+    noCollapse: true,
+  },
+ 
   { type: "title", title: "Account Pages", key: "account-pages" },
   {
     type: "collapse",
@@ -144,6 +143,7 @@ const routes = [
     route: "/profile",
     icon: <CustomerSupport size="12px" />,
     component: <Profile />,
+
     noCollapse: true,
   },
   {
@@ -153,6 +153,7 @@ const routes = [
     route: "/authentication/sign-in",
     icon: <Document size="12px" />,
     component: <SignIn/>,
+    layout:"sign-in",
     noCollapse: true,
 
   },

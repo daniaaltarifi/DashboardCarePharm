@@ -10,12 +10,12 @@ import SoftButton from "components/SoftButton";
 import Icon from "@mui/material/Icon";
 import PropTypes from "prop-types";
 
-export default function EditNewsDialog({ initialTitle, initialSummary, initialDescription, onSave }) {
+export default function EditNewsDialog({ initialTitle, initialSummary, initialDescription,initialImg, onSave }) {
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = useState(initialTitle);
   const [summary, setSummary] = useState(initialSummary);
   const [description, setDescription] = useState(initialDescription);
-
+const[img,setImg]=useState(initialImg)
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -23,10 +23,18 @@ export default function EditNewsDialog({ initialTitle, initialSummary, initialDe
   const handleClose = () => {
     setOpen(false);
   };
-
+  const handleFileChange = (event) => {
+    // Assuming you have an input element with the type="file"
+    const file = event.target.files[0]; // Get the first selected file
+  
+    if (file) {
+      // Store the file object in state or a variable if needed
+      setImg(file);
+    }
+  };
   const handleSaveUpdate = () => {
     // Call the onSave function with updated values
-    onSave(title, summary, description);
+    onSave(title, summary, description,img);
     handleClose();
   };
 
@@ -71,6 +79,17 @@ export default function EditNewsDialog({ initialTitle, initialSummary, initialDe
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
+           <DialogContentText>image </DialogContentText>
+        <TextField
+            autoFocus
+            margin="dense"
+            id="title"
+            type="file"
+            name="title"
+            fullWidth
+            // Remove the value prop
+            onChange={handleFileChange}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
@@ -89,6 +108,8 @@ EditNewsDialog.propTypes = {
   initialTitle: PropTypes.string.isRequired,
   initialSummary: PropTypes.string.isRequired,
   initialDescription: PropTypes.string.isRequired,
+  initialImg: PropTypes.string.isRequired,
+
   onSave: PropTypes.func.isRequired,
   // onCancel: PropTypes.func.isRequired,
 };  

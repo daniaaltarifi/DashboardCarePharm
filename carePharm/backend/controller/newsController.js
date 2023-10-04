@@ -41,10 +41,16 @@ const postNews = async (req, res) => {
 const updateNews = async (req, res) => {
   try {
     const _id = req.params._id;
+    const oldNews = await newsModel.findById(_id);
+
+    await cloudinary.uploader.destroy(oldNews.cloudinary_id)
+    const result=await cloudinary.uploader.upload(req.file.path)
     const update = {
       title: req.body.title,
       summary: req.body.summary,
       description: req.body.description,
+      avatar:result.secure_url || oldNews.avatar,
+      cloudinary_id:result.public_id ||oldNews.cloudinary_id
     };
     await newsModel.findByIdAndUpdate(_id, update);
     res.status(200).json(update);

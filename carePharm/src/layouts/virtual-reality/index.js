@@ -81,6 +81,7 @@ function index() {
 
   const handleUpdate = async (
     _id,
+    img,
     DRG_SERIAL_NO,
     BARCODE,
     NAME,
@@ -95,20 +96,27 @@ function index() {
  
   ) => {
     try {
-      const response = await axios.patch(`http://localhost:5000/medicineAvailable/update/${_id}`, {
-        DRG_SERIAL_NO: DRG_SERIAL_NO, // Use the provided title
-        BARCODE: BARCODE, // Use the provided summary
-        NAME: NAME, // Use the provided description
-        DRG_FILLING: DRG_FILLING,
-        DOSAGE: DOSAGE,
-        DRG_CONCENTRATE: DRG_CONCENTRATE,
-        STORES_DESC_L: STORES_DESC_L,
-        ATCCODE: ATCCODE,
-        DRG_PRIMARY_CMP_COUNTRY: DRG_PRIMARY_CMP_COUNTRY,
-        JPP: JPP,
-        PHARM_P: PHARM_P,
-        
+      const formData = new FormData();
+      formData.append('image', img); // 'image' should match the field name on the server
+  
+      // Append other form data fields
+      formData.append('NAME', NAME);
+      formData.append('DRG_SERIAL_NO', DRG_SERIAL_NO);
+      formData.append('BARCODE', BARCODE);
+      formData.append('DRG_FILLING', DRG_FILLING);
+      formData.append('DOSAGE', DOSAGE);
+      formData.append('DRG_CONCENTRATE', DRG_CONCENTRATE);
+      formData.append('STORES_DESC_L', STORES_DESC_L);
+      formData.append('ATCCODE', ATCCODE);
+      formData.append('DRG_PRIMARY_CMP_COUNTRY', DRG_PRIMARY_CMP_COUNTRY);
+      formData.append('JPP', JPP);
+      formData.append('PHARM_P', PHARM_P);
+      const response = await axios.patch(`http://localhost:5000/medicineAvailable/update/${_id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Set the content type for file upload
+        },
       });
+     
       console.log("hello");
       setAvailable(response.data);
       // window.location.reload();
@@ -129,6 +137,7 @@ function index() {
 
   // Function to handle the save action
   const handleSaveUpdate = (
+    editedImg,
     editedDRG_SERIAL_NO,
     editedBARCODE,
     editedNAME,
@@ -148,6 +157,7 @@ function index() {
       // You can use the handleUpdate function to make the API call
       handleUpdate(
         editAvailable._id,
+        editedImg,
         editedDRG_SERIAL_NO,
         editedBARCODE,
         editedNAME,
@@ -262,6 +272,8 @@ function index() {
                           initialDRG_PRIMARY_CMP_COUNTRY={available.DRG_PRIMARY_CMP_COUNTRY}
                           initialJPP={available.JPP}
                           initialPHARM_P={available.PHARM_P}
+                          initialImg={available.img}
+
                           onSave={handleSaveUpdate}
                         />
                       </MDBBtn>

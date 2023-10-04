@@ -65,6 +65,7 @@ function CreatePharmacyDialog({ open, setOpen, onSave }) {
       formData.append('hours_of_operation[friday]', friday);
       formData.append('hours_of_operation[saturday]', saturday);
       formData.append('hours_of_operation[sunday]', sunday);
+
       // Append services as needed
   
       const response = await axios.post("http://localhost:5000/pharmacy/post", formData, {
@@ -251,7 +252,7 @@ function CreatePharmacyDialog({ open, setOpen, onSave }) {
             fullWidth
           />
 
-          <DialogContentText>Services: </DialogContentText>
+          {/* <DialogContentText>Services: </DialogContentText>
           <TextField
             autoFocus
             margin="dense"
@@ -260,7 +261,7 @@ function CreatePharmacyDialog({ open, setOpen, onSave }) {
             // value={descreption}
             onChange={(e) => setServices(e.target.value)}
             fullWidth
-          />
+          /> */}
         </DialogContent>
         <Button variant="contained" type="submit" className="btn_create_task" onClick={handlePost}>
           Post Pharmacy

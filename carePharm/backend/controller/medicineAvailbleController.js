@@ -65,8 +65,11 @@ const addMedicineAvailable = async (req, res) => {
       res.json(`Error in post data backend${err.response}`);
     });
 };
-const updateMedicineAvailable = (req, res) => {
+const updateMedicineAvailable = async (req, res) => {
   let _id = req.params._id;
+  const oldNews = await medicineAvailable.findById(_id);
+  await cloudinary.uploader.destroy(oldNews.cloudinary_id)
+  const result=await cloudinary.uploader.upload(req.file.path)
   medicineAvailable.findById(_id).then((update) => {
     update.DRG_SERIAL_NO = req.body.DRG_SERIAL_NO;
     update.BARCODE = req.body.BARCODE;
@@ -78,6 +81,9 @@ const updateMedicineAvailable = (req, res) => {
     update.ATCCODE = req.body.ATCCODE;
     update.DRG_PRIMARY_CMP_COUNTRY = req.body.DRG_PRIMARY_CMP_COUNTRY;
     update.JPP = req.body.JPP;
+    update.avatar=result.secure_url || oldNews.avatar;
+    update.cloudinary_id=result.public_id || oldNews.cloudinary_id
+ 
     update
       .save()
       .then(() => {

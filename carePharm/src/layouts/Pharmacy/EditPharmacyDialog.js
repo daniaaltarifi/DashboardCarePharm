@@ -10,7 +10,7 @@ import SoftButton from "components/SoftButton";
 import Icon from "@mui/material/Icon";
 import PropTypes from "prop-types";
 
-export default function EditPharmacyDialog({ initialName, initialStreet, initialCity,initialState,initialPostalCode,initialPhone,initialEmail,initialWebsite,initialMonday,initialTuesday,initialWednesday,initialThursday,initialFriday,initialSaturday,initialSunday,initialServices, onSave }) {
+export default function EditPharmacyDialog({ initialName, initialStreet, initialCity,initialState,initialPostalCode,initialPhone,initialEmail,initialWebsite,initialMonday,initialTuesday,initialWednesday,initialThursday,initialFriday,initialSaturday,initialSunday,initialServices,initialImg, onSave }) {
   const [open, setOpen] = React.useState(false);
   const [name, setName] = useState(initialName);
   const [city, setCity] = useState(initialCity);
@@ -28,6 +28,7 @@ export default function EditPharmacyDialog({ initialName, initialStreet, initial
   const [friday, setFriday] = useState(initialFriday);
   const [saturday, setSaturday] = useState(initialSaturday);
   const [sunday, setSunday] = useState(initialSunday);
+  const[img,setImg]=useState(initialImg)
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,10 +37,18 @@ export default function EditPharmacyDialog({ initialName, initialStreet, initial
   const handleClose = () => {
     setOpen(false);
   };
-
+  const handleFileChange = (event) => {
+    // Assuming you have an input element with the type="file"
+    const file = event.target.files[0]; // Get the first selected file
+  
+    if (file) {
+      // Store the file object in state or a variable if needed
+      setImg(file);
+    }
+  };
   const handleSaveUpdate = () => {
     // Call the onSave function with updated values
-    onSave(name, city, street,state,postal_code,phone,email,website,services,monday,tuesday,wednesday,thursday,friday,saturday,sunday);
+    onSave(img,name, city, street,state,postal_code,phone,email,website,services,monday,tuesday,wednesday,thursday,friday,saturday,sunday);
     handleClose();
   };
 
@@ -214,6 +223,17 @@ export default function EditPharmacyDialog({ initialName, initialStreet, initial
             value={sunday}
             onChange={(e) => setSunday(e.target.value)}
           />
+               <DialogContentText>image </DialogContentText>
+        <TextField
+            autoFocus
+            margin="dense"
+            id="title"
+            type="file"
+            name="title"
+            fullWidth
+            // Remove the value prop
+            onChange={handleFileChange}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
@@ -245,6 +265,8 @@ EditPharmacyDialog.propTypes = {
     initialSaturday: PropTypes.string.isRequired,
     initialSunday: PropTypes.string.isRequired,
     initialServices: PropTypes.string.isRequired, // onCancel: PropTypes.func.isRequired,
+    initialImg: PropTypes.string.isRequired,
+
   onSave: PropTypes.func.isRequired,
   // onCancel: PropTypes.func.isRequired,
 };  

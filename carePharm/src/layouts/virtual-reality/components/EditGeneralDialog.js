@@ -10,7 +10,7 @@ import SoftButton from "components/SoftButton";
 import Icon from "@mui/material/Icon";
 import PropTypes from "prop-types";
 
-export default function EditGeneralDialog({ initialDRG_SERIAL_NO, initialBARCODE, initialNAME,initialDRG_FILLING,initialDOSAGE,initialDRG_CONCENTRATE,initialSTORES_DESC_L,initialATCCODE,initialDRG_PRIMARY_CMP_COUNTRY,initialJPP,initialPHARM_P, onSave }) {
+export default function EditGeneralDialog({initialImg,initialDRG_SERIAL_NO, initialBARCODE, initialNAME,initialDRG_FILLING,initialDOSAGE,initialDRG_CONCENTRATE,initialSTORES_DESC_L,initialATCCODE,initialDRG_PRIMARY_CMP_COUNTRY,initialJPP,initialPHARM_P, onSave }) {
   const [open, setOpen] = React.useState(false);
   const [DRG_SERIAL_NO, setDRG_SERIAL_NO] = useState(initialDRG_SERIAL_NO);
   const [BARCODE, setBARCODE] = useState(initialBARCODE);
@@ -23,8 +23,17 @@ export default function EditGeneralDialog({ initialDRG_SERIAL_NO, initialBARCODE
   const [DRG_PRIMARY_CMP_COUNTRY, setDRG_PRIMARY_CMP_COUNTRY] = useState(initialDRG_PRIMARY_CMP_COUNTRY);
   const [JPP, setJPP] = useState(initialJPP);
   const [PHARM_P, setPHARM_P] = useState(initialPHARM_P);
+  const[img,setImg]=useState(initialImg)
 
-
+  const handleFileChange = (event) => {
+    // Assuming you have an input element with the type="file"
+    const file = event.target.files[0]; // Get the first selected file
+  
+    if (file) {
+      // Store the file object in state or a variable if needed
+      setImg(file);
+    }
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,7 +45,7 @@ export default function EditGeneralDialog({ initialDRG_SERIAL_NO, initialBARCODE
 
   const handleSaveUpdate = () => {
     // Call the onSave function with updated values
-    onSave(DRG_SERIAL_NO,BARCODE,NAME, DRG_FILLING, DOSAGE,DRG_CONCENTRATE,STORES_DESC_L,ATCCODE,DRG_PRIMARY_CMP_COUNTRY,JPP,PHARM_P);
+    onSave(img,DRG_SERIAL_NO,BARCODE,NAME, DRG_FILLING, DOSAGE,DRG_CONCENTRATE,STORES_DESC_L,ATCCODE,DRG_PRIMARY_CMP_COUNTRY,JPP,PHARM_P);
     handleClose();
   };
 
@@ -56,7 +65,7 @@ export default function EditGeneralDialog({ initialDRG_SERIAL_NO, initialBARCODE
             margin="dense"
             id="title"
             label="DRG SERIAL NO"
-            type="text"
+            type="Number"
             fullWidth
             value={DRG_SERIAL_NO}
             onChange={(e) => setDRG_SERIAL_NO(e.target.value)}
@@ -146,7 +155,7 @@ export default function EditGeneralDialog({ initialDRG_SERIAL_NO, initialBARCODE
             margin="dense"
             id="description"
             label="JPP"
-            type="text"
+            type="Number"
             fullWidth
             value={JPP}
             onChange={(e) => setJPP(e.target.value)}
@@ -161,7 +170,17 @@ export default function EditGeneralDialog({ initialDRG_SERIAL_NO, initialBARCODE
             value={PHARM_P}
             onChange={(e) => setPHARM_P(e.target.value)}
           />
-          
+           <DialogContentText>image </DialogContentText>
+        <TextField
+            autoFocus
+            margin="dense"
+            id="title"
+            type="file"
+            name="title"
+            fullWidth
+            // Remove the value prop
+            onChange={handleFileChange}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
@@ -188,7 +207,8 @@ EditGeneralDialog.propTypes = {
     initialDRG_PRIMARY_CMP_COUNTRY: PropTypes.string.isRequired,
     initialJPP: PropTypes.string.isRequired,
     initialPHARM_P: PropTypes.string.isRequired,
-   
+    initialImg: PropTypes.string.isRequired,
+
   onSave: PropTypes.func.isRequired,
   // onCancel: PropTypes.func.isRequired,
 };  

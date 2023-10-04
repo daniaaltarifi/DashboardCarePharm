@@ -5,7 +5,7 @@ const {getAllNews,getNewsById,postNews,updateNews,deleteNews}=require('../contro
 router.route('/').get(getAllNews)
 router.route('/get/:_id').get(getNewsById)
 router.route('/create').post(upload.single('image'),postNews)
-router.route('/update/:_id').patch(updateNews)
+router.route('/update/:_id').patch(upload.single('image'),updateNews)
 router.route('/delete/:_id').delete(deleteNews)
 
 module.exports=router

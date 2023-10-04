@@ -2,6 +2,12 @@ const mongoose = require("mongoose");
 
 const schema = mongoose.Schema;
 const advancedMedicineSchema = new schema({
+  avatar:{
+    type:String
+  },
+  cloudinary_id:{
+    type:String
+  },
   RECORD_STATUS_DESC: {
     type: String,
   },

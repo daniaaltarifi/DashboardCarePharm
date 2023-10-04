@@ -13,6 +13,8 @@ const medicineAvailable = [
     JPP: 33.64,
 
     PHARM_P: 26.7,
+    DRG_SERIAL_NO: 1215151,
+
   },
   {
     DRG_SERIAL_NO: 965093,

@@ -46,9 +46,19 @@ function CreateAdvancedDialog({ open, setOpen, onSave }) {
   const [ITEM_SOURCE, setITEM_SOURCE] = useState("");
   const [DISP_CATEGORY, setDISP_CATEGORY] = useState("");
   const [DRUG_TYPE, setDRUG_TYPE] = useState("");
+  const [img, setImg] = useState("");
 
 
+ //for upload img
+ const handleFileChange = (event) => {
+  // Assuming you have an input element with the type="file"
+  const file = event.target.files[0]; // Get the first selected file
 
+  if (file) {
+    // Store the file object in state or a variable if needed
+    setImg(file);
+  }
+};
 
   const handleClose = () => {
     setOpen(false);
@@ -56,26 +66,67 @@ function CreateAdvancedDialog({ open, setOpen, onSave }) {
 
   const handlePost = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/advancedMedicine/create", {
-        RECORD_STATUS_DESC	,
-        REGISTRATION_REQUEST_NUMBER,
-        REGISTRATION_REQUEST_DATE,
-        DRG_SERIAL_NO,
-        DRG_BARCODE,
-        NAME,
-        DRG_FILLING,
-        DOSAGE,
-        DRG_CONCENTRATE,
-        STORES_DESC_L,
-        INGREDIENT,
-        ATCCODE,
-        DRG_REG_NO,
-        RE_REGISTRATION_DATE,
-        DRG_INDUST_CMP,DRG_INDUST_CMP_COUNTRY,DRG_SALES_CMP,DRG_SALES_COUNTRY,DRG_PRIMARY_CMP,DRG_PRIMARY_CMP_COUNTRY,
-        DRG_SECONDARY_CMP,
-        DRG_SECONDARY_CMP_COUNTRY,DRG_B_R_CMP,DRG_B_R_CMP_COUNTRY,JHP,JHP_TAXED,LIST_NAME,LIST_CLASSIFICATION,LIST_RECORD_TYPE,
-        ITEM_SOURCE,DISP_CATEGORY,DRUG_TYPE
+      const formData = new FormData();
+      formData.append('RECORD_STATUS_DESC', RECORD_STATUS_DESC); // 'image' should match the field name on the server
+      formData.append('REGISTRATION_REQUEST_NUMBER', REGISTRATION_REQUEST_NUMBER); // Append 'title' with its value
+      formData.append('REGISTRATION_REQUEST_DATE', REGISTRATION_REQUEST_DATE); // Append 'summary' with its value
+      formData.append('DRG_SERIAL_NO', DRG_SERIAL_NO); // Append 'description' with its value
+      formData.append('DRG_BARCODE', DRG_BARCODE); // Append 'description' with its value
+      formData.append('NAME', NAME); // Append 'description' with its value
+      formData.append('DRG_FILLING', DRG_FILLING); // Append 'description' with its value
+      formData.append('DOSAGE', DOSAGE); // Append 'description' with its value
+      formData.append('DRG_CONCENTRATE', DRG_CONCENTRATE); // Append 'description' with its value
+      formData.append('STORES_DESC_L', STORES_DESC_L); // Append 'description' with its value
+      formData.append('INGREDIENT', INGREDIENT); // Append 'description' with its value
+      formData.append('ATCCODE', ATCCODE); // Append 'description' with its value
+      formData.append('DRG_REG_NO', DRG_REG_NO); // Append 'description' with its value
+      formData.append('RE_REGISTRATION_DATE', RE_REGISTRATION_DATE); // Append 'description' with its value
+      formData.append('DRG_INDUST_CMP', DRG_INDUST_CMP); // Append 'description' with its value
+      formData.append('DRG_INDUST_CMP_COUNTRY', DRG_INDUST_CMP_COUNTRY); // Append 'description' with its value
+      formData.append('DRG_SALES_CMP', DRG_SALES_CMP); // Append 'description' with its value
+      formData.append('DRG_SALES_COUNTRY', DRG_SALES_COUNTRY); // Append 'description' with its value
+      formData.append('DRG_PRIMARY_CMP', DRG_PRIMARY_CMP); // Append 'description' with its value
+      formData.append('DRG_PRIMARY_CMP_COUNTRY', DRG_PRIMARY_CMP_COUNTRY); // Append 'description' with its value
+      formData.append('DRG_SECONDARY_CMP', DRG_SECONDARY_CMP); // Append 'description' with its value
+      formData.append('DRG_SECONDARY_CMP_COUNTRY', DRG_SECONDARY_CMP_COUNTRY); // Append 'description' with its value
+      formData.append('DRG_B_R_CMP', DRG_B_R_CMP); // Append 'description' with its value
+      formData.append('DRG_SECONDARY_CMP_COUNTRY', DRG_SECONDARY_CMP_COUNTRY); // Append 'description' with its value
+      formData.append('DRG_B_R_CMP_COUNTRY', DRG_B_R_CMP_COUNTRY); // Append 'description' with its value
+      formData.append('JHP', JHP); // Append 'description' with its value
+      formData.append('JHP_TAXED', JHP_TAXED); // Append 'description' with its value
+      formData.append('LIST_NAME', LIST_NAME); // Append 'description' with its value
+      formData.append('LIST_CLASSIFICATION', LIST_CLASSIFICATION); // Append 'description' with its value
+      formData.append('LIST_RECORD_TYPE', LIST_RECORD_TYPE); // Append 'description' with its value
+      formData.append('ITEM_SOURCE', ITEM_SOURCE); // Append 'description' with its value
+      formData.append('DISP_CATEGORY', DISP_CATEGORY); // Append 'description' with its value
+      formData.append('DRUG_TYPE', DRUG_TYPE); // Append 'description' with its value
+      formData.append('image', img); // 'image' should match the field name on the server
+
+      const response = await axios.post("http://localhost:5000/advancedMedicine/create", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Set the content type for file upload
+        },
       });
+      // const response = await axios.post("http://localhost:5000/advancedMedicine/create", {
+      //   RECORD_STATUS_DESC	,
+      //   REGISTRATION_REQUEST_NUMBER,
+      //   REGISTRATION_REQUEST_DATE,
+      //   DRG_SERIAL_NO,
+      //   DRG_BARCODE,
+      //   NAME,
+      //   DRG_FILLING,
+      //   DOSAGE,
+      //   DRG_CONCENTRATE,
+      //   STORES_DESC_L,
+      //   INGREDIENT,
+      //   ATCCODE,
+      //   DRG_REG_NO,
+      //   RE_REGISTRATION_DATE,
+      //   DRG_INDUST_CMP,DRG_INDUST_CMP_COUNTRY,DRG_SALES_CMP,DRG_SALES_COUNTRY,DRG_PRIMARY_CMP,DRG_PRIMARY_CMP_COUNTRY,
+      //   DRG_SECONDARY_CMP,
+      //   DRG_SECONDARY_CMP_COUNTRY,DRG_B_R_CMP,DRG_B_R_CMP_COUNTRY,JHP,JHP_TAXED,LIST_NAME,LIST_CLASSIFICATION,LIST_RECORD_TYPE,
+      //   ITEM_SOURCE,DISP_CATEGORY,DRUG_TYPE
+      // });
       console.log(response.data);
       // Call the onSave callback with the data
       onSave(response.data);
@@ -91,7 +142,7 @@ function CreateAdvancedDialog({ open, setOpen, onSave }) {
       <Dialog open={open} onClose={handleClose} aria-labelledby="edit-apartment" fullWidth>
         <div className="btn_edit">
           <h1 id="edit-apartment" className="title_newTask">
-            Post General Information
+            Post Advanced Information
           </h1>
         </div>
         <DialogContent>
@@ -387,7 +438,19 @@ function CreateAdvancedDialog({ open, setOpen, onSave }) {
             onChange={(e) => setDRUG_TYPE(e.target.value)}
             fullWidth
           />
+           <DialogContentText>image </DialogContentText>
+        <TextField
+            autoFocus
+            margin="dense"
+            id="title"
+            type="file"
+            name="title"
+            fullWidth
+            // Remove the value prop
+            onChange={handleFileChange}
+          />
         </DialogContent>
+        
         <Button variant="contained" type="submit" className="btn_create_task" onClick={handlePost}>
           Post Advanced Information
         </Button>

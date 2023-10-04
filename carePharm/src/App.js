@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useState, useEffect, useMemo } from "react";
 
 // react-router components
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation,Router } from "react-router-dom";
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
@@ -46,6 +46,8 @@ import routes from "routes";
 import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "context";
 import AdminRoute from "AdminRoute";
 import UsersTable from "layouts/Users/UsersTable";
+import SignIn from "layouts/authentication/sign-in";
+
 // Images
 import brand from "assets/images/logo-ct.png";
 import { ToastContainer } from 'react-toastify';
@@ -56,6 +58,8 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
+  const isSignInPage = pathname === "/authentication/sign-in";
+  const isSignUpPage = pathname === "/authentication/sign-up";
 
 
   // Cache for the rtl
@@ -135,12 +139,18 @@ export default function App() {
       </Icon>
     </SoftBox>
   );
+{/* <Router>
+  <Routes>
+  <Route path="/authentication/sign-in" element={<SignIn />} />
+  <Route path="/" element={<routes />} />
 
+  </Routes>
+</Router> */}
   return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={themeRTL}>
         <CssBaseline />
-        {layout === "dashboard" && (
+        {layout === "dashboard" && !isSignInPage && !isSignUpPage &&(
           <>
             <Sidenav
               color={sidenavColor}
@@ -164,7 +174,7 @@ export default function App() {
   ) : (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {layout === "dashboard" && (
+      {layout === "dashboard" && !isSignInPage && !isSignUpPage &&  (
         <>
           <Sidenav
             color={sidenavColor}

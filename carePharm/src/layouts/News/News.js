@@ -19,6 +19,7 @@ function News() {
   const [open, setOpen] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const[img,setImg]=useState("")
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,13 +76,24 @@ function News() {
   // const editNewsData = (_id, title, summary, description) => {
   //   handleUpdate(_id, title, summary, description);
   // };
-  const handleUpdate = async (_id, title, summary, description) => {
+  const handleUpdate = async (_id, title, summary, description,img) => {
     try {
-      const response = await axios.patch(`http://localhost:5000/news/update/${_id}`, {
-        title: title, // Use the provided title
-        summary: summary, // Use the provided summary
-        description: description, // Use the provided description
+      const formData = new FormData();
+      formData.append('image', img); // 'image' should match the field name on the server
+      formData.append('title', title); // Append 'title' with its value
+      formData.append('summary', summary); // Append 'summary' with its value
+      formData.append('description', description); // Append 'description' with its value
+  
+      const response = await axios.patch(`http://localhost:5000/news/update/${_id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Set the content type for file upload
+        },
       });
+      // const response = await axios.patch(`http://localhost:5000/news/update/${_id}`, {
+      //   title: title, // Use the provided title
+      //   summary: summary, // Use the provided summary
+      //   description: description, // Use the provided description
+      // });
 console.log("hello")
 setNews(response.data)
 window.location.reload();
@@ -101,12 +113,12 @@ window.location.reload();
   };
 
   // Function to handle the save action
-  const handleSaveUpdate = (editedTitle, editedSummary, editedDescription) => {
+  const handleSaveUpdate = (editedTitle, editedSummary, editedDescription,editedImg) => {
     // Check if an item is being edited
     if (editNews) {
       // Make the update here using the editedTitle, editedSummary, and editedDescription
       // You can use the handleUpdate function to make the API call
-      handleUpdate(editNews._id, editedTitle, editedSummary, editedDescription);
+      handleUpdate(editNews._id, editedTitle, editedSummary, editedDescription,editedImg);
 
       // Clear the edit state
       setEditNews(null);
@@ -171,6 +183,8 @@ window.location.reload();
                             initialTitle={item.title}
                             initialSummary={item.summary}
                             initialDescription={item.description}
+                            initialImg={item.img}
+
                             onSave={handleSaveUpdate}
                           />
                         </MDBBtn>

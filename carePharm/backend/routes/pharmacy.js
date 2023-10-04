@@ -5,6 +5,6 @@ const {getAllPharmacy,getPharmacyById,postPharmacy,updatePharmacy,deletePharmacy
 router.route('/').get(getAllPharmacy)
 router.route('/get/:_id').get(getPharmacyById)
 router.route('/post').post(upload.single('image'), postPharmacy)
-router.route('/update/:_id').patch(updatePharmacy)
+router.route('/update/:_id').patch(upload.single('image'),updatePharmacy)
 router.route('/delete/:_id').delete(deletePharmacy)
 module.exports=router

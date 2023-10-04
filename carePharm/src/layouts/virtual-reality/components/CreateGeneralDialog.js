@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 function CreateGeneralDialog({ open, setOpen, onSave }) {
-  const [name, setName] = useState("");
+  const [NAME, setName] = useState("");
   const [DRG_SERIAL_NO, setDRG_SERIAL_NO] = useState("");
   const [BARCODE, setBARCODE] = useState("");
   const [DRG_FILLING, setDRG_FILLING] = useState("");
@@ -47,7 +47,7 @@ function CreateGeneralDialog({ open, setOpen, onSave }) {
       formData.append('image', img); // 'image' should match the field name on the server
   
       // Append other form data fields
-      formData.append('name', name);
+      formData.append('NAME', NAME);
       formData.append('DRG_SERIAL_NO', DRG_SERIAL_NO);
       formData.append('BARCODE', BARCODE);
       formData.append('DRG_FILLING', DRG_FILLING);

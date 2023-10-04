@@ -6,6 +6,6 @@ const {addMedicineAvailable,getAllAvailable,updateMedicineAvailable,getAvailable
 router.route('/').get(getAllAvailable)
 router.route('/getAvilableById/:_id').get(getAvailableById)
 router.route('/add').post(upload.single('image'), addMedicineAvailable);
-router.route('/update/:_id').patch(updateMedicineAvailable)
+router.route('/update/:_id').patch(upload.single('image'),updateMedicineAvailable)
 router.route('/del/:_id').delete(delAvailableInfo)
 module.exports=router

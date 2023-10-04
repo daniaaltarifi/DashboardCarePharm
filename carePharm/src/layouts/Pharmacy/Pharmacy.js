@@ -69,29 +69,54 @@ function Pharmacy() {
     setPharmacy((prevPharmacy) => [...prevPharmacy, newPharmacy]);
   };
 
-  const handleUpdate = async (_id, name, city,street,state,postal_code,phone,email,website,services,monday,tuesday,wednesday,thursday,friday,saturday,sunday) => {
+  const handleUpdate = async (
+    _id,
+    img,
+    name,
+    city,
+    street,
+    state,
+    postal_code,
+    phone,
+    email,
+    website,
+    services,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+    sunday
+  ) => {
     try {
-      const response = await axios.patch(`http://localhost:5000/pharmacy/update/${_id}`, {
-        name: name, // Use the provided title
-        city: city, // Use the provided summary
-        street: street, // Use the provided description
-        state:state,
-        postal_code:postal_code,
-        phone:phone,
-        email:email,
-        website:website,
-        services:services,
-        monday:monday,
-        tuesday:tuesday,
-        wednesday:wednesday,
-        thursday:thursday,
-        friday:friday,
-        saturday:saturday,
-        sunday:sunday
+      const formData = new FormData();
+      formData.append("image", img); // 'image' should match the field name on the server
+      formData.append("name", name);
+      formData.append("address[city]", city);
+      formData.append("address[street]", street);
+      formData.append("address[state]", state);
+      formData.append("address[postal_code]", postal_code);
+      formData.append("phone", phone);
+      formData.append("email", email);
+      formData.append("website", website);
+      formData.append("hours_of_operation[monday]", monday);
+      formData.append("hours_of_operation[tuesday]", tuesday);
+      formData.append("hours_of_operation[wednesday]", wednesday);
+      formData.append("hours_of_operation[thursday]", thursday);
+      formData.append("hours_of_operation[friday]", friday);
+      formData.append("hours_of_operation[saturday]", saturday);
+      formData.append("hours_of_operation[sunday]", sunday);
+      // Append services as needed
+
+      const response = await axios.patch(`http://localhost:5000/pharmacy/update/${_id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Set the content type for file upload
+        },
       });
-console.log("hello")
-setPharmacy(response.data)
-window.location.reload();
+      console.log("hello");
+      setPharmacy(response.data);
+      window.location.reload();
 
       console.log(response.data);
       // setNews(response.data);
@@ -108,12 +133,49 @@ window.location.reload();
   };
 
   // Function to handle the save action
-  const handleSaveUpdate = (editedName, editedCity, editedStreet,editedState,editedpostal_code,editedphone,editedemail,editedwebsite,editedservices,editedmonday,editedtuesday,editedwednesday,editedthursday,editedfriday,editedsaturday,editedsunday) => {
+  const handleSaveUpdate = (
+    editedImg,
+    editedName,
+    editedCity,
+    editedStreet,
+    editedState,
+    editedpostal_code,
+    editedphone,
+    editedemail,
+    editedwebsite,
+    editedservices,
+    editedmonday,
+    editedtuesday,
+    editedwednesday,
+    editedthursday,
+    editedfriday,
+    editedsaturday,
+    editedsunday
+  ) => {
     // Check if an item is being edited
     if (editPharmacy) {
       // Make the update here using the editedTitle, editedSummary, and editedDescription
       // You can use the handleUpdate function to make the API call
-      handleUpdate(editPharmacy._id, editedName, editedCity, editedStreet,editedState,editedpostal_code,editedphone,editedemail,editedwebsite,editedservices,editedmonday,editedtuesday,editedwednesday,editedthursday,editedfriday,editedsaturday,editedsunday);
+      handleUpdate(
+        editPharmacy._id,
+        editedImg,
+        editedName,
+        editedCity,
+        editedStreet,
+        editedState,
+        editedpostal_code,
+        editedphone,
+        editedemail,
+        editedwebsite,
+        editedservices,
+        editedmonday,
+        editedtuesday,
+        editedwednesday,
+        editedthursday,
+        editedfriday,
+        editedsaturday,
+        editedsunday
+      );
 
       // Clear the edit state
       setEditPharmacy(null);
@@ -139,112 +201,121 @@ window.location.reload();
                 <th scope="col">email</th>
                 <th scope="col">website</th>
                 <th scope="col">hours_of_operation</th>
-                <th scope="col">services</th>
+                <th scope="col"></th>
                 <th scope="col">Actions</th>
               </tr>
             </MDBTableHead>
 
             <MDBTableBody>
-              {Array.isArray(pharmacy) && pharmacy.map((pharmacy, idx) => (
-                <tr key={pharmacy._id}>
-                  <td>
-                  <div className="d-flex align-items-center">
+              {Array.isArray(pharmacy) &&
+                pharmacy.map((pharmacy, idx) => (
+                  <tr key={pharmacy._id}>
+                    <td>
+                      <div className="d-flex align-items-center">
                         <img
-                     src={pharmacy.avatar}
-                     alt=''
-                     style={{ width: '45px', height: '45px' }}
-                     className='rounded-circle'
-                   />
+                          src={pharmacy.avatar}
+                          alt=""
+                          style={{ width: "45px", height: "45px" }}
+                          className="rounded-circle"
+                        />
                         <div className="ms-3">
                           <p className="fw-bold mb-1">{pharmacy.name}</p>
                         </div>
                       </div>
-                  </td>
-                  <td>
-                    <div className="ms-3">
-                      <p className="fw-bold mb-1">
-                        {pharmacy.address && pharmacy.address.city ? pharmacy.address.city : "N/A"}
-                      </p>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="ms-3">
-                      <p className="fw-bold mb-1">
-                        {pharmacy.address && pharmacy.address.street
-                          ? pharmacy.address.street
-                          : "N/A"}
-                      </p>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="ms-3">
-                      <p className="fw-bold mb-1">
-                        {pharmacy.address && pharmacy.address.state
-                          ? pharmacy.address.state
-                          : "N/A "}
-                      </p>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="ms-3">
-                      <p className="fw-bold mb-1">
-                        {pharmacy.address && pharmacy.address.postal_code
-                          ? pharmacy.address.postal_code
-                          : "N/A "}
-                      </p>
-                    </div>
-                  </td>
-                  <td>
-                    <p className="text-muted mb-0">{pharmacy.phone}</p>
-                  </td>
-                  <td>
-                    <p className="text-muted mb-0">{pharmacy.email}</p>
-                  </td>
-                  <td>
-                    <p className="text-muted mb-0">{pharmacy.website}</p>
-                  </td>
-                  <td>
-                    <div className="ms-3">
-                      <p className="text-muted mb-0">
-                        Monday:
-                        {pharmacy.hours_of_operation && pharmacy.hours_of_operation.monday
-                          ? pharmacy.hours_of_operation.monday
-                          : "N/A"}
-                      </p>
-                      <p className="text-muted mb-0">Tuesday:
-                        {pharmacy.hours_of_operation && pharmacy.hours_of_operation.tuesday
-                          ? pharmacy.hours_of_operation.tuesday
-                          : "N/A"}
-                      </p>
-                      <p className="text-muted mb-0">Wednesday:
-                        {pharmacy.hours_of_operation && pharmacy.hours_of_operation.wednesday
-                          ? pharmacy.hours_of_operation.wednesday
-                          : "N/A"}
-                      </p>
+                    </td>
+                    <td>
+                      <div className="ms-3">
+                        <p className="fw-bold mb-1">
+                          {pharmacy.address && pharmacy.address.city
+                            ? pharmacy.address.city
+                            : "N/A"}
+                        </p>
+                      </div>
+                    </td>
+                    <td>
+                      <div className="ms-3">
+                        <p className="fw-bold mb-1">
+                          {pharmacy.address && pharmacy.address.street
+                            ? pharmacy.address.street
+                            : "N/A"}
+                        </p>
+                      </div>
+                    </td>
+                    <td>
+                      <div className="ms-3">
+                        <p className="fw-bold mb-1">
+                          {pharmacy.address && pharmacy.address.state
+                            ? pharmacy.address.state
+                            : "N/A "}
+                        </p>
+                      </div>
+                    </td>
+                    <td>
+                      <div className="ms-3">
+                        <p className="fw-bold mb-1">
+                          {pharmacy.address && pharmacy.address.postal_code
+                            ? pharmacy.address.postal_code
+                            : "N/A "}
+                        </p>
+                      </div>
+                    </td>
+                    <td>
+                      <p className="text-muted mb-0">{pharmacy.phone}</p>
+                    </td>
+                    <td>
+                      <p className="text-muted mb-0">{pharmacy.email}</p>
+                    </td>
+                    <td>
+                      <p className="text-muted mb-0">{pharmacy.website}</p>
+                    </td>
+                    <td>
+                      <div className="ms-3">
+                        <p className="text-muted mb-0">
+                          Monday:
+                          {pharmacy.hours_of_operation && pharmacy.hours_of_operation.monday
+                            ? pharmacy.hours_of_operation.monday
+                            : "N/A"}
+                        </p>
+                        <p className="text-muted mb-0">
+                          Tuesday:
+                          {pharmacy.hours_of_operation && pharmacy.hours_of_operation.tuesday
+                            ? pharmacy.hours_of_operation.tuesday
+                            : "N/A"}
+                        </p>
+                        <p className="text-muted mb-0">
+                          Wednesday:
+                          {pharmacy.hours_of_operation && pharmacy.hours_of_operation.wednesday
+                            ? pharmacy.hours_of_operation.wednesday
+                            : "N/A"}
+                        </p>
 
-                      <p className="text-muted mb-0">Thursday:
-                        {pharmacy.hours_of_operation && pharmacy.hours_of_operation.thursday
-                          ? pharmacy.hours_of_operation.thursday
-                          : "N/A"}
-                      </p>
-                      <p className="text-muted mb-0">Friday
-                        {pharmacy.hours_of_operation && pharmacy.hours_of_operation.friday
-                          ? pharmacy.hours_of_operation.friday
-                          : "N/A"}
-                      </p>
-                      <p className="text-muted mb-0">Saturday:
-                        {pharmacy.hours_of_operation && pharmacy.hours_of_operation.saturday
-                          ? pharmacy.hours_of_operation.saturday
-                          : "N/A"}
-                      </p>
-                      <p className="text-muted mb-0">Sunday:
-                        {pharmacy.hours_of_operation && pharmacy.hours_of_operation.sunday
-                          ? pharmacy.hours_of_operation.sunday
-                          : "N/A"}
-                      </p>
-                    </div>
-                  </td>
-                  {/* <td>
+                        <p className="text-muted mb-0">
+                          Thursday:
+                          {pharmacy.hours_of_operation && pharmacy.hours_of_operation.thursday
+                            ? pharmacy.hours_of_operation.thursday
+                            : "N/A"}
+                        </p>
+                        <p className="text-muted mb-0">
+                          Friday
+                          {pharmacy.hours_of_operation && pharmacy.hours_of_operation.friday
+                            ? pharmacy.hours_of_operation.friday
+                            : "N/A"}
+                        </p>
+                        <p className="text-muted mb-0">
+                          Saturday:
+                          {pharmacy.hours_of_operation && pharmacy.hours_of_operation.saturday
+                            ? pharmacy.hours_of_operation.saturday
+                            : "N/A"}
+                        </p>
+                        <p className="text-muted mb-0">
+                          Sunday:
+                          {pharmacy.hours_of_operation && pharmacy.hours_of_operation.sunday
+                            ? pharmacy.hours_of_operation.sunday
+                            : "N/A"}
+                        </p>
+                      </div>
+                    </td>
+                    {/* <td>
                     {pharmacy.hours_of_operation && Object.entries(pharmacy.hours_of_operation).map(([day, hours]) => (
                       <div key={day}>
                         <p className="text-muted mb-0">
@@ -253,45 +324,60 @@ window.location.reload();
                       </div>
                     ))}{" "}
                   </td> */}
-                  <td>
-                    <p className="text-muted mb-0">{pharmacy.services}</p>
-                  </td>
-                  <td>
-                    <MDBBtn
-                      color="link"
-                      rounded
-                      size="sm"
-                      onClick={() => setPharmacyToDelete((prev) => [...prev, pharmacy._id])}
-                    >
-                      <SoftButton variant="text" color="error">
-                        <Icon>delete</Icon>&nbsp;delete
-                      </SoftButton>
-                    </MDBBtn>
+                    <td>
+                      <p className="text-muted mb-0">{pharmacy.services}</p>
+                    </td>
+                    <td>
+                      <MDBBtn
+                        color="link"
+                        rounded
+                        size="sm"
+                        onClick={() => setPharmacyToDelete((prev) => [...prev, pharmacy._id])}
+                      >
+                        <SoftButton variant="text" color="error">
+                          <Icon>delete</Icon>&nbsp;delete
+                        </SoftButton>
+                      </MDBBtn>
 
-                    <MDBBtn color="link" rounded size="sm" onClick={() => handleEdit(pharmacy)}>
-                          <EditPharmacyDialog
-                            initialName={pharmacy.name}
-                            initialStreet={pharmacy.address && pharmacy.address.street}
-                             initialCity={pharmacy.address && pharmacy.address.city}
-                             initialState={pharmacy.address && pharmacy.address.state}
-                             initialPostalCode={pharmacy.address && pharmacy.address.postal_code}
-                             initialPhone={pharmacy.phone}
-                             initialEmail={pharmacy.email}
-                             initialWebsite={pharmacy.website}
-                             initialMonday={pharmacy.hours_of_operation && pharmacy.hours_of_operation.monday}
-                             initialTuesday={pharmacy.hours_of_operation && pharmacy.hours_of_operation.tuesday}
-                             initialWednesday={pharmacy.hours_of_operation && pharmacy.hours_of_operation.wednesday}
-                             initialThursday={pharmacy.hours_of_operation && pharmacy.hours_of_operation.thursday}
-                             initialFriday={pharmacy.hours_of_operation && pharmacy.hours_of_operation.friday}
-                             initialSaturday={pharmacy.hours_of_operation && pharmacy.hours_of_operation.saturday}
-                             initialSunday={pharmacy.hours_of_operation && pharmacy.hours_of_operation.sunday}
-                             initialServices={pharmacy.services}
-                            onSave={handleSaveUpdate}
-                          />
-                        </MDBBtn>
-                  </td>
-                </tr>
-              ))}
+                      <MDBBtn color="link" rounded size="sm" onClick={() => handleEdit(pharmacy)}>
+                        <EditPharmacyDialog
+                          initialImg={pharmacy.img}
+                          initialName={pharmacy.name}
+                          initialStreet={pharmacy.address && pharmacy.address.street}
+                          initialCity={pharmacy.address && pharmacy.address.city}
+                          initialState={pharmacy.address && pharmacy.address.state}
+                          initialPostalCode={pharmacy.address && pharmacy.address.postal_code}
+                          initialPhone={pharmacy.phone}
+                          initialEmail={pharmacy.email}
+                          initialWebsite={pharmacy.website}
+                          initialMonday={
+                            pharmacy.hours_of_operation && pharmacy.hours_of_operation.monday
+                          }
+                          initialTuesday={
+                            pharmacy.hours_of_operation && pharmacy.hours_of_operation.tuesday
+                          }
+                          initialWednesday={
+                            pharmacy.hours_of_operation && pharmacy.hours_of_operation.wednesday
+                          }
+                          initialThursday={
+                            pharmacy.hours_of_operation && pharmacy.hours_of_operation.thursday
+                          }
+                          initialFriday={
+                            pharmacy.hours_of_operation && pharmacy.hours_of_operation.friday
+                          }
+                          initialSaturday={
+                            pharmacy.hours_of_operation && pharmacy.hours_of_operation.saturday
+                          }
+                          initialSunday={
+                            pharmacy.hours_of_operation && pharmacy.hours_of_operation.sunday
+                          }
+                          initialServices={pharmacy.services}
+                          onSave={handleSaveUpdate}
+                        />
+                      </MDBBtn>
+                    </td>
+                  </tr>
+                ))}
               {pharmacyToDelete.map((id, index) => (
                 <AlertDelete key={id} onConfirm={() => handleDelete(id, index)} />
               ))}

@@ -46,6 +46,9 @@ res.status(200).json(createPharmacy)
 const updatePharmacy=async(req,res)=>{
     try{
 const _id=req.params._id;
+const oldNews = await pharmacyModel.findById(_id);
+await cloudinary.uploader.destroy(oldNews.cloudinary_id)
+const result=await cloudinary.uploader.upload(req.file.path)
 const update={
     name:req.body.name,
     address:req.body.address,
@@ -54,6 +57,8 @@ const update={
     website:req.body.website,
     hours_of_operation:req.body.hours_of_operation,
     services:req.body.services,
+    avatar:result.secure_url || oldNews.avatar,
+    cloudinary_id:result.public_id ||oldNews.cloudinary_id
 }
 await pharmacyModel.findByIdAndUpdate(_id,update);
 res.status(200).json({msg:"pharmacy Updated",data:update})

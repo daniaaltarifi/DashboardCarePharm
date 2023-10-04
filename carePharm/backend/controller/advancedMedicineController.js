@@ -1,4 +1,6 @@
 const advancedMedicineModel = require("../models/advancedMedicineModel.js");
+const cloudinary=require('../utils/cloudinary.js');
+const upload=require('../utils/multer.js')
 //Get all Advanced Medicine
 const getAllMedicineInfo = async (req, res) => {
   try {
@@ -20,7 +22,7 @@ const getAdvancedById = async (req, res) => {
   }
 };
 //Add  Advanced Medicine
-const addAdvancedMedicine = (req, res) => {
+const addAdvancedMedicine = async (req, res) => {
   const {
     RECORD_STATUS_DESC,
     REGISTRATION_REQUEST_NUMBER,
@@ -57,6 +59,11 @@ const addAdvancedMedicine = (req, res) => {
     DISP_CATEGORY,
     DRUG_TYPE,
   } = req.body;
+  const result=await cloudinary.uploader.upload(req.file.path)
+  const cloudinaryData = {
+    avatar: result.secure_url,
+    cloudinary_id: result.public_id,
+  };
   advancedMedicineModel
     .create({
       RECORD_STATUS_DESC,
@@ -93,9 +100,11 @@ const addAdvancedMedicine = (req, res) => {
       ITEM_SOURCE,
       DISP_CATEGORY,
       DRUG_TYPE,
+      ...cloudinaryData, // Spread the cloudinaryData object here
+
     })
     .then((advancedMedicine) => {
-      res.status(200).json({ msg: "Advanced Added", data: advancedMedicine });
+      res.status(200).json(advancedMedicine );
     })
     .catch((err) => {
       res.status(500).json(err);
@@ -106,6 +115,9 @@ const addAdvancedMedicine = (req, res) => {
 const updateAdvancedMedicine = async (req, res) => {
   try {
     const _id = req.params._id;
+    const oldNews = await advancedMedicineModel.findById(_id);
+    await cloudinary.uploader.destroy(oldNews.cloudinary_id)
+    const result=await cloudinary.uploader.upload(req.file.path)
     const updateInfo = {
       RECORD_STATUS_DESC: req.body.RECORD_STATUS_DESC,
       REGISTRATION_REQUEST_NUMBER: req.body.REGISTRATION_REQUEST_NUMBER,
@@ -141,6 +153,8 @@ const updateAdvancedMedicine = async (req, res) => {
       ITEM_SOURCE: req.body.ITEM_SOURCE,
       DISP_CATEGORY: req.body.DISP_CATEGORY,
       DRUG_TYPE: req.body.DRUG_TYPE,
+      avatar:result.secure_url || oldNews.avatar,
+      cloudinary_id:result.public_id ||oldNews.cloudinary_id
     };
     await advancedMedicineModel.findByIdAndUpdate(_id, updateInfo);
     res.status(200).json({msg:"Advanced Information Updated",data:updateInfo});
